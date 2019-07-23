@@ -21,6 +21,7 @@
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
+mb_internal_encoding('UTF-8');
 
 require_once 'libphonenumber/PhoneNumberUtil.php';
 
@@ -157,25 +158,25 @@ class CRM_Utils_Normalize {
             if ( CRM_Utils_Array::value('contact_type', $contact) == 'Organization') {
               // Capitalize organization statuses
               // in_array is case sensitive, lower case the $word
-              if ( in_array(str_replace(array('.'), '', strtolower($word)), $orgstatus) ) {
+              if ( in_array(str_replace(array('.'), '', mb_strtolower($word)), $orgstatus) ) {
                 $word = strtoupper($word);
-              } else if ( in_array(str_replace(array('.'), '', strtolower($word)), $orgstatusSpecial) ) {
+              } else if ( in_array(str_replace(array('.'), '', mb_strtolower($word)), $orgstatusSpecial) ) {
                 // special status only need first letter to be capitalize
-                $word = str_replace(array('.'), '', strtolower($word)) . '.';
-              } else if (in_array(strtolower($word), $orgHandles)) {
+                $word = str_replace(array('.'), '', mb_strtolower($word)) . '.';
+              } else if (in_array(mb_strtolower($word), $orgHandles)) {
                  // lower case few matching word for Organization contact
-                 $word = strtolower($word);
+                 $word = mb_strtolower($word);
                }
             } elseif ( CRM_Utils_Array::value('contact_type', $contact) == 'Individual') {
                // lower case few matching word for individual contact
-               if (in_array(strtolower($word), $handles)) {
-                 $word = strtolower($word);
+               if (in_array(mb_strtolower($word), $handles)) {
+                 $word = mb_strtolower($word);
                }
             }
             if (!in_array($word, $handles) && !in_array($word, $orgHandles)) {
               // in case name does not contain special handler char, normalize with lower all char and then use ucfirst
               if ( CRM_Utils_Array::value('contact_type', $contact) == 'Individual') {
-                $word = strtolower($word);
+                $word = mb_strtolower($word);
               }
               $word = ucfirst($word);
             }
@@ -184,8 +185,8 @@ class CRM_Utils_Normalize {
           $name = join($delimiter, $newWords);
           if (CRM_Utils_Array::value('contact_type', $contact) == 'Individual') {
             // if name is matching handles, then normalize it
-            if (in_array(strtolower($name), $handles)) {
-              $name = ucwords(strtolower($name));
+            if (in_array(mb_strtolower($name), $handles)) {
+              $name = ucwords(mb_strtolower($name));
             }
           }
         }

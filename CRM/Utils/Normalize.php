@@ -287,7 +287,7 @@ class CRM_Utils_Normalize {
         if ($value == 1 && $addressValue) {
           $address[$name] = strtoupper($addressValue);
         } elseif($value == 2 && $addressValue) {
-          $address[$name] = $this->mb_ucFirst($addressValue);
+          $address[$name] = $this->ucFirst($addressValue);
           // Capitalize directionals and other misc items
           if ($country && array_key_exists($country, $directionals)) {
             $patterns = array();
@@ -308,7 +308,7 @@ class CRM_Utils_Normalize {
       if ($value == 1 && $city) {
         $address['city'] = strtoupper($city);
       } elseif($value == 2 && $city) {
-        $address['city'] = $this->mb_ucFirst($city);
+        $address['city'] = $this->ucFirst($city);
       }
     }
 

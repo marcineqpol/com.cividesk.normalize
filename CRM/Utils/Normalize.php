@@ -78,6 +78,7 @@ class CRM_Utils_Normalize {
   static function setSetting($value, $name) {
     CRM_Core_BAO_Setting::setItem($value, CRM_Utils_Normalize::NORMALIZE_PREFERENCES_NAME, $name);
   }
+  
 
   /**
    * Normalizes a name according to International rules - as much as we can
@@ -178,7 +179,7 @@ class CRM_Utils_Normalize {
               if ( CRM_Utils_Array::value('contact_type', $contact) == 'Individual') {
                 $word = mb_strtolower($word);
               }
-              $word = ucfirst($word);
+              $word = mb_convert_case($word, MB_CASE_TITLE, "UTF-8");
             }
             array_push($newWords, $word);
           }
@@ -186,7 +187,7 @@ class CRM_Utils_Normalize {
           if (CRM_Utils_Array::value('contact_type', $contact) == 'Individual') {
             // if name is matching handles, then normalize it
             if (in_array(mb_strtolower($name), $handles)) {
-              $name = ucwords(mb_strtolower($name));
+              $name = mb_convert_case($name, MB_CASE_TITLE, "UTF-8");
             }
           }
         }
@@ -286,7 +287,7 @@ class CRM_Utils_Normalize {
         if ($value == 1 && $addressValue) {
           $address[$name] = strtoupper($addressValue);
         } elseif($value == 2 && $addressValue) {
-          $address[$name] = $this->ucFirst($addressValue);
+          $address[$name] = $this->mb_ucFirst($addressValue);
           // Capitalize directionals and other misc items
           if ($country && array_key_exists($country, $directionals)) {
             $patterns = array();
@@ -307,7 +308,7 @@ class CRM_Utils_Normalize {
       if ($value == 1 && $city) {
         $address['city'] = strtoupper($city);
       } elseif($value == 2 && $city) {
-        $address['city'] = $this->ucFirst($city);
+        $address['city'] = $this->mb_ucFirst($city);
       }
     }
 
